@@ -1,0 +1,15 @@
+{
+  "name": "daymark-monorepo",
+  "version": "1.0.0",
+  "description": "DayMark on Botchain Testnet - On-chain daily check-in dApp",
+  "private": true,
+  "scripts": {
+    "contracts:test": "npm --prefix contracts test",
+    "contracts:compile": "npm --prefix contracts run compile",
+    "contracts:deploy": "npm --prefix contracts run deploy",
+    "contracts:verify": "npm --prefix contracts run verify",
+    "frontend:dev": "npm --prefix frontend run dev",
+    "frontend:build": "npm --prefix frontend run build",
+    "frontend:start": "npm --prefix frontend run start"
+  }
+}
