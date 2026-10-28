@@ -15,7 +15,7 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: "DayMark — On-Chain Daily Check-In",
-  description: "One day. One check-in. On-chain. Record your daily check-in on Botchain Testnet.",
+  description: "One day. One check-in. On-chain. Record your daily check-in on Botchain Mainnet.",
   keywords: ["DayMark", "Botchain", "Web3", "dApp", "Daily Check-In", "Blockchain"],
   icons: {
     icon: [

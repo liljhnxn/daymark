@@ -3,7 +3,7 @@ pragma solidity ^0.8.20;
 
 /**
  * @title DayMark
- * @notice An on-chain daily check-in smart contract for Botchain Testnet.
+ * @notice An on-chain daily check-in smart contract for Botchain.
  * Users can record their daily check-in once per UTC calendar day.
  */
 contract DayMark {

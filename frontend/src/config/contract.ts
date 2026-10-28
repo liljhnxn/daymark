@@ -1,7 +1,7 @@
 import { Address } from "viem";
 
 export const DAYMARK_CONTRACT_ADDRESS = (process.env.NEXT_PUBLIC_DAYMARK_CONTRACT_ADDRESS ||
-  "0x5D9681260894c8aad18d202D6c27803cF279A35a") as Address;
+  "0x48ef5c6348e349A9694579Fb1f2f8828f3a3f929") as Address;
 
 export const isContractConfigured = (): boolean => {
   return (

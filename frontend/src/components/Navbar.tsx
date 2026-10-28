@@ -1,8 +1,10 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
+import Image from "next/image";
 import { useAccount, useConnect, useDisconnect, useSwitchChain } from "wagmi";
-import { botchainTestnet } from "@/config/chain";
+import { botchain } from "@/config/chain";
+import { DAYMARK_CONTRACT_ADDRESS } from "@/config/contract";
 import { Wallet, LogOut, Check, Copy, ExternalLink, AlertTriangle, ShieldCheck } from "lucide-react";
 
 export function Navbar() {
@@ -17,7 +19,7 @@ export function Navbar() {
     setMounted(true);
   }, []);
 
-  const isCorrectNetwork = chainId === botchainTestnet.id;
+  const isCorrectNetwork = chainId === botchain.id;
 
   const copyAddress = () => {
     if (address) {
@@ -59,27 +61,65 @@ export function Navbar() {
               <span className="font-extrabold text-xl tracking-tight text-white">
                 Day<span className="text-cyan-400">Mark</span>
               </span>
-              <span className="text-[10px] font-semibold px-2 py-0.5 rounded-full bg-cyan-950/90 text-cyan-400 border border-cyan-800/50">
-                BOTCHAIN
+              <span className="inline-flex items-center gap-1.5 text-[10px] font-semibold px-2 py-0.5 rounded-full bg-slate-900 text-emerald-400 border border-emerald-800/50">
+                <div className="w-3.5 h-3.5 rounded-sm bg-black overflow-hidden flex items-center justify-center">
+                  <Image
+                    src="/botchain-logo.png"
+                    alt="BOT Chain Logo"
+                    width={14}
+                    height={14}
+                    className="w-full h-full object-contain"
+                  />
+                </div>
+                <span>BOT CHAIN</span>
               </span>
             </div>
             <p className="text-xs text-slate-400 hidden sm:block">One day. One check-in. On-chain.</p>
           </div>
         </div>
 
-        {/* Right side: Network Status & Wallet */}
-        <div className="flex items-center gap-3 sm:gap-4">
+        {/* Right side: Network Status, Contract Link & Wallet */}
+        <div className="flex items-center gap-2 sm:gap-3">
+          {/* Mainnet Explorer Contract Link with Logo in front */}
+          <a
+            href={`https://scan.botchain.ai/address/${DAYMARK_CONTRACT_ADDRESS}`}
+            target="_blank"
+            rel="noreferrer"
+            title="View DayMark Contract on BotScan Explorer"
+            className="hidden sm:flex items-center gap-2 px-3 py-1.5 rounded-lg bg-slate-900/80 hover:bg-slate-800 border border-slate-800 hover:border-emerald-500/40 text-slate-300 hover:text-emerald-300 text-xs font-medium transition-all"
+          >
+            <div className="w-4 h-4 rounded-sm bg-black overflow-hidden flex items-center justify-center shrink-0">
+              <Image
+                src="/botchain-logo.png"
+                alt="BOT Chain Logo"
+                width={16}
+                height={16}
+                className="w-full h-full object-contain"
+              />
+            </div>
+            <span>Explorer</span>
+            <ExternalLink className="w-3 h-3 text-slate-400" />
+          </a>
+
           {/* Network Indicator */}
           {mounted && isConnected && (
             <div className="hidden md:flex items-center">
               {isCorrectNetwork ? (
                 <div className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-emerald-950/40 border border-emerald-500/30 text-emerald-300 text-xs font-medium">
-                  <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
-                  Botchain Testnet (968)
+                  <div className="w-3.5 h-3.5 rounded-sm bg-black overflow-hidden flex items-center justify-center shrink-0">
+                    <Image
+                      src="/botchain-logo.png"
+                      alt="BOT Chain"
+                      width={14}
+                      height={14}
+                      className="w-full h-full object-contain"
+                    />
+                  </div>
+                  <span>Mainnet (677)</span>
                 </div>
               ) : (
                 <button
-                  onClick={() => switchChain({ chainId: botchainTestnet.id })}
+                  onClick={() => switchChain({ chainId: botchain.id })}
                   className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-amber-950/60 border border-amber-500/40 text-amber-300 text-xs font-medium hover:bg-amber-900/60 transition-all cursor-pointer"
                 >
                   <AlertTriangle className="w-3.5 h-3.5 text-amber-400" />
@@ -109,10 +149,10 @@ export function Navbar() {
               </button>
 
               <a
-                href={`https://scan.bohr.life/address/${address}`}
+                href={`https://scan.botchain.ai/address/${address}`}
                 target="_blank"
                 rel="noreferrer"
-                title="View on BohrScan"
+                title="View on BotScan"
                 className="p-1.5 text-slate-400 hover:text-cyan-400 hover:bg-slate-800 rounded-lg transition-colors"
               >
                 <ExternalLink className="w-3.5 h-3.5" />

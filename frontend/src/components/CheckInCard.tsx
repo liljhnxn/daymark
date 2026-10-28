@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
+import Image from "next/image";
 import {
   useAccount,
   useConnect,
@@ -15,7 +16,7 @@ import {
   DAYMARK_CONTRACT_ADDRESS,
   isContractConfigured,
 } from "@/config/contract";
-import { botchainTestnet } from "@/config/chain";
+import { botchain } from "@/config/chain";
 import {
   CheckCircle2,
   Clock,
@@ -38,7 +39,7 @@ export function CheckInCard() {
   const [timeUntilNextDay, setTimeUntilNextDay] = useState("");
 
   const isConfigured = isContractConfigured();
-  const isCorrectNetwork = chainId === botchainTestnet.id;
+  const isCorrectNetwork = chainId === botchain.id;
 
   // Read check-in details from DayMark smart contract
   const {
@@ -165,7 +166,7 @@ export function CheckInCard() {
     if (msg.includes("insufficient funds")) {
       return "Insufficient BOT funds to cover the gas fee.";
     }
-    return "Transaction failed. Please ensure you are connected to Botchain Testnet and try again.";
+    return "Transaction failed. Please ensure you are connected to Botchain Mainnet and try again.";
   };
 
   if (!mounted) {
@@ -183,7 +184,7 @@ export function CheckInCard() {
           <div className="space-y-1">
             <p className="font-semibold text-amber-300">Contract Address Pending</p>
             <p className="text-xs text-amber-200/80">
-              Deploy the contract to Botchain Testnet using Hardhat, then set{" "}
+              Deploy the contract to Botchain Mainnet using Hardhat, then set{" "}
               <code className="font-mono bg-black/40 px-1.5 py-0.5 rounded text-amber-300">
                 NEXT_PUBLIC_DAYMARK_CONTRACT_ADDRESS
               </code>{" "}
@@ -226,7 +227,7 @@ export function CheckInCard() {
             {!isConnected
               ? "Connect Your Wallet"
               : !isCorrectNetwork
-              ? "Switch to Botchain Testnet"
+              ? "Switch to Botchain Mainnet"
               : checkedInToday
               ? "Checked In Today!"
               : "Ready to Check In"}
@@ -234,12 +235,12 @@ export function CheckInCard() {
 
           <p className="text-sm text-slate-400 max-w-sm mb-8 leading-relaxed">
             {!isConnected
-              ? "Connect your Web3 wallet to record your daily check-in on the Botchain Testnet blockchain."
+              ? "Connect your Web3 wallet to record your daily check-in on Botchain Mainnet."
               : !isCorrectNetwork
-              ? "Your wallet is on another network. Please switch to Botchain Testnet (Chain ID 968) to proceed."
+              ? "Your wallet is on another network. Please switch to Botchain Mainnet (Chain ID 677) to proceed."
               : checkedInToday
               ? "You have successfully marked your attendance for today's UTC calendar day."
-              : "Claim your daily presence on Botchain Testnet. One check-in allowed per UTC calendar day."}
+              : "Claim your daily presence on Botchain Mainnet. One check-in allowed per UTC calendar day."}
           </p>
 
           {/* Action Button */}
@@ -257,11 +258,11 @@ export function CheckInCard() {
               </button>
             ) : !isCorrectNetwork ? (
               <button
-                onClick={() => switchChain({ chainId: botchainTestnet.id })}
+                onClick={() => switchChain({ chainId: botchain.id })}
                 className="w-full py-4 px-6 rounded-2xl bg-gradient-to-r from-amber-500 to-orange-600 hover:from-amber-400 hover:to-orange-500 text-white font-semibold text-base shadow-xl shadow-amber-500/20 active:scale-[0.99] transition-all cursor-pointer flex items-center justify-center gap-2"
               >
                 <ArrowRight className="w-5 h-5" />
-                <span>Switch to Botchain Testnet</span>
+                <span>Switch to Botchain Mainnet</span>
               </button>
             ) : checkedInToday ? (
               <button
@@ -313,7 +314,7 @@ export function CheckInCard() {
               <span>
                 {isWritePending
                   ? "Please review and confirm the transaction in your wallet..."
-                  : "Transaction submitted! Waiting for block confirmation on Botchain Testnet..."}
+                  : "Transaction submitted! Waiting for block confirmation on Botchain Mainnet..."}
               </span>
             </div>
           )}
@@ -322,10 +323,10 @@ export function CheckInCard() {
             <div className="mt-6 w-full p-4 rounded-xl bg-emerald-950/40 border border-emerald-500/40 text-emerald-200 text-xs flex items-center justify-between gap-2">
               <div className="flex items-center gap-2 text-left">
                 <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0" />
-                <span>Check-in confirmed on Botchain Testnet!</span>
+                <span>Check-in confirmed on Botchain Mainnet!</span>
               </div>
               <a
-                href={`https://scan.bohr.life/tx/${txHash}`}
+                href={`https://scan.botchain.ai/tx/${txHash}`}
                 target="_blank"
                 rel="noreferrer"
                 className="flex items-center gap-1 font-semibold text-emerald-300 hover:text-emerald-100 underline shrink-0"
@@ -343,6 +344,33 @@ export function CheckInCard() {
           )}
         </div>
       </div>
+
+      {/* Mainnet Explorer Contract Link with Logo */}
+      {isConfigured && (
+        <div className="mt-4 flex items-center justify-center">
+          <a
+            href={`https://scan.botchain.ai/address/${DAYMARK_CONTRACT_ADDRESS}`}
+            target="_blank"
+            rel="noreferrer"
+            className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-slate-900/80 border border-slate-800 hover:border-emerald-500/40 text-[11px] text-slate-300 hover:text-emerald-300 transition-all group shadow-sm"
+          >
+            <div className="w-3.5 h-3.5 rounded-xs bg-black overflow-hidden flex items-center justify-center shrink-0">
+              <Image
+                src="/botchain-logo.png"
+                alt="BOT Chain Logo"
+                width={14}
+                height={14}
+                className="w-full h-full object-contain"
+              />
+            </div>
+            <span>Contract on BotScan:</span>
+            <span className="font-mono text-emerald-400 group-hover:text-emerald-300">
+              {DAYMARK_CONTRACT_ADDRESS.slice(0, 6)}...{DAYMARK_CONTRACT_ADDRESS.slice(-4)}
+            </span>
+            <ExternalLink className="w-3 h-3 text-slate-500 group-hover:text-emerald-300" />
+          </a>
+        </div>
+      )}
 
       {/* Connected Wallet Stats Grid */}
       {isConnected && isCorrectNetwork && (
